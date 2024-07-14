@@ -36,7 +36,13 @@ class Facility
   def administer_road_test(registrant)
     if registrant.taken_written_test && registrant.passed_written_test
       registrant.taken_road_test = true
-      registrant.issue_license = true
+      registrant.issued_license = true
+    end
+  end
+
+  def renew_license(registrant)
+    if registrant.issued_license
+      registrant.license_renewed = true
     end
   end
 end
