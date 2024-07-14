@@ -4,8 +4,12 @@ class Registrant
     def initialize(registrant_details)
         @name = registrant_details[:name]
         @age = registrant_details[:age]
-        @permit = registrant_details(:permit, false)
+        @permit = registrant_details.fetch(:permit, false)
         @license_data = registrant_details[:license_data]
+    end
+
+    def permit?
+        @permit
     end
 
     def earn_permit
