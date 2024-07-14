@@ -23,5 +23,20 @@ class Facility
     else
       @collected_fees += 100
     end
+    vehicle.plate_type = vehicle.type
+    @registered_vehicles << vehicle
+  end
+
+  def administer_written_test(registrant)
+    if registrant.permit? && registrant.age >= 16
+      registrant.taken_written_test = true
+    end
+  end
+
+  def administer_road_test(registrant)
+    if registrant.taken_written_test && registrant.passed_written_test
+      registrant.taken_road_test = true
+      registrant.issue_license = true
+    end
   end
 end
