@@ -6,4 +6,9 @@ RSpec.describe Registrant do
         @registrant_1 = Registrant.new({name: 'Bruce', age: 18, permit: true})
         @registrant_2 = Registrant.new({name: 'Penny', age: 15, })
     end
+
+    it 'initialize name' do
+        expect(@registrant_1.name).to eq('Bruce')
+        expect(@registrant_2.name).to eq('Penny')
+    end
 end
