@@ -1,5 +1,10 @@
 class Facility
-  attr_reader :name, :address, :phone, :services, :registered_vehicle, :collected_fees
+  attr_reader :name,
+              :address,
+              :phone, 
+              :services, 
+              :registered_vehicles, 
+              :collected_fees
 
   def initialize(details)
     @name = details[:name]
@@ -15,34 +20,41 @@ class Facility
   end
 
   def register_vehicle(vehicle)
-    case vehicle.type
-    when :antique
-      @collected_fees += 25
-    when :ev
-      @collected_fees += 200
-    else
-      @collected_fees += 100
-    end
-    vehicle.plate_type = vehicle.type
+    if vehicle.engine == :ice
+      if vehicle.antique?
+          @collected_fees += 25
+          vehicle.plate_type = :antique
+        else
+          @collected_fees += 100
+          vehicle.plate_type = :regular
+        end
+      elsif vehicle.engine == :ev
+       @collected_fees += 200
+        vehicle.plate_type = :ev
+      else
+        @collected_fees += 100
+        vehicle.plate_type = :regular
+      end
+    
+    vehicle.registration_date = Date.today
     @registered_vehicles << vehicle
   end
 
   def administer_written_test(registrant)
     if registrant.permit? && registrant.age >= 16
-      registrant.taken_written_test = true
+      registrant.license_data[:written] = true
     end
   end
 
   def administer_road_test(registrant)
-    if registrant.taken_written_test && registrant.passed_written_test
-      registrant.taken_road_test = true
-      registrant.issued_license = true
+    if registrant.license_data[:written] && registrant.license_data[:license]
+      registrant.license_data[:renewed] = true
     end
   end
 
   def renew_license(registrant)
-    if registrant.issued_license
-      registrant.license_renewed = true
+    if registrant.license_data[:license]
+      registrant.license_data[:renewed] = true
     end
   end
 end
